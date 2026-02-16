@@ -4,13 +4,11 @@ from datetime import datetime
 
 class JournalManager: 
 
-    # ✅ Correct Constructor
+    
     def __init__(self):
         self.filename = "journal.txt"
 
-    # ------------------------------
-    # 1. Add Entry
-    # ------------------------------
+    
     def add_entry(self):
         entry = input("Enter your journal entry:\n")
 
@@ -25,13 +23,11 @@ class JournalManager:
         except Exception as e:
             print("Error while writing to file:", e)
 
-    # ------------------------------
-    # 2. View Entries
-    # ------------------------------
+
     def view_entries(self):
         try:
             with open(self.filename, "r") as file:
-                content = file.read()   # ✅ FIX ADDED
+                content = file.read()   
 
                 if content.strip() == "":
                     print("No journal entries found.\n")
@@ -43,9 +39,6 @@ class JournalManager:
         except FileNotFoundError:
             print("Journal file does not exist. Please add an entry first.\n")
 
-    # ------------------------------
-    # 3. Search Entry
-    # ------------------------------
     def search_entry(self):
         keyword = input("Enter keyword to search: ")
 
@@ -64,10 +57,7 @@ class JournalManager:
 
         except FileNotFoundError:
             print("Journal file does not exist.\n")
-
-    # ------------------------------
-    # 4. Delete Entries
-    # ------------------------------
+            
     def delete_entries(self):
         if os.path.exists(self.filename):
             choice = input("Are you sure you want to delete all entries? (yes/no): ")
@@ -80,10 +70,6 @@ class JournalManager:
         else:
             print("No journal file found to delete.\n")
 
-
-# ------------------------------
-# Main Function
-# ------------------------------
 def main():
     journal = JournalManager()
 
@@ -115,3 +101,4 @@ def main():
 if __name__ == "__main__":
     main()
     
+
