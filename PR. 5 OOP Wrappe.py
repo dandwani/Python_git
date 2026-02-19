@@ -54,8 +54,7 @@ class Developer(Employee):
         super().display()
         print("Programming Language:", self.language)
 
-
-Employee = None
+emp = None
 
 while True:
     print("\n==== Employee Management System ====")
