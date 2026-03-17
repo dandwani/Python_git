@@ -13,7 +13,7 @@ class Bookstore:
         except:
             print("Error loading CSV files")
 
-    # ---------------- INVENTORY FUNCTIONS ----------------
+    
     def add_book(self, title, author, genre, price, quantity):
         if price <= 0 or quantity <= 0:
             print("Invalid price or quantity")
@@ -42,7 +42,7 @@ class Bookstore:
         self.inventory = self.inventory[self.inventory["Title"] != title]
         print("Book removed!")
 
-    # ---------------- SALES FUNCTIONS ----------------
+   
     def record_sale(self, title, quantity):
         if quantity <= 0:
             print("Invalid quantity")
@@ -70,7 +70,7 @@ class Bookstore:
 
         print("Sale recorded!")
 
-    # ---------------- ANALYTICS ----------------
+   
     def generate_report(self):
         total_revenue = np.sum(self.sales["Total Revenue"])
         avg_price = np.mean(self.inventory["Price"])
@@ -82,7 +82,7 @@ class Bookstore:
         print("Average Book Price:", avg_price)
         print("\nTop Selling Books:\n", top_books)
 
-    # ---------------- VISUALIZATION ----------------
+   
     def visualize_data(self):
         sns.set_style("whitegrid")
 
@@ -110,7 +110,7 @@ class Bookstore:
         plt.show()
 
 
-# ---------------- MAIN MENU ----------------
+
 def main():
     store = Bookstore()
 
