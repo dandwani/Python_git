@@ -5,30 +5,31 @@ import seaborn as sns
 
 class Bookstore:
 
+    
     def __init__(self):
         try:
             self.inventory = pd.read_csv("inventory.csv")
             self.sales = pd.read_csv("sales.csv")
             print("Data Loaded Successfully!")
         except:
-            print("Error loading CSV files")
+           
+            self.inventory = pd.DataFrame(columns=["Title", "Author", "Genre", "Price", "Quantity"])
+            self.sales = pd.DataFrame(columns=["Date", "Title", "Quantity Sold", "Total Revenue"])
+            print("Initialized new dataframes.")
 
-    
+  
+
     def add_book(self, title, author, genre, price, quantity):
-        if price <= 0 or quantity <= 0:
-            print("Invalid price or quantity")
-            return
-
         new_book = pd.DataFrame([{
             "Title": title,
             "Author": author,
             "Genre": genre,
-            "Price": price,
-            "Quantity": quantity
+            "Price": float(price), 
+            "Quantity": int(quantity) 
         }])
 
         self.inventory = pd.concat([self.inventory, new_book], ignore_index=True)
-        print("Book added successfully!")
+        print("Book added!")
 
     def update_inventory(self, title, quantity):
         if quantity < 0:
@@ -42,7 +43,7 @@ class Bookstore:
         self.inventory = self.inventory[self.inventory["Title"] != title]
         print("Book removed!")
 
-   
+  
     def record_sale(self, title, quantity):
         if quantity <= 0:
             print("Invalid quantity")
@@ -65,12 +66,12 @@ class Bookstore:
 
         self.sales = pd.concat([self.sales, new_sale], ignore_index=True)
 
-        # Reduce stock
+      
         self.inventory.loc[self.inventory["Title"] == title, "Quantity"] -= quantity
 
         print("Sale recorded!")
 
-   
+    
     def generate_report(self):
         total_revenue = np.sum(self.sales["Total Revenue"])
         avg_price = np.mean(self.inventory["Price"])
@@ -86,28 +87,34 @@ class Bookstore:
     def visualize_data(self):
         sns.set_style("whitegrid")
 
-        # Bar Chart
+       
         genre_sales = self.inventory.groupby("Genre")["Quantity"].sum()
         genre_sales.plot(kind='bar', title="Books by Genre")
         plt.show()
 
-        # Line Chart
+        
         self.sales["Date"] = pd.to_datetime(self.sales["Date"])
         monthly_sales = self.sales.groupby(self.sales["Date"].dt.month)["Total Revenue"].sum()
         monthly_sales.plot(kind='line', title="Monthly Sales")
         plt.show()
 
-        # Pie Chart
+        
         revenue_by_genre = self.inventory.groupby("Genre")["Price"].sum()
         revenue_by_genre.plot(kind='pie', autopct='%1.1f%%')
         plt.title("Revenue Share by Genre")
         plt.show()
 
-        # Heatmap
+       
         pivot = self.inventory.pivot_table(values="Price", index="Genre", columns="Author")
         sns.heatmap(pivot, annot=True)
         plt.title("Heatmap (Price vs Genre & Author)")
         plt.show()
+    
+    def save_data(self):
+       
+        self.inventory.to_csv("inventory.csv", index=False)
+        self.sales.to_csv("sales.csv", index=False)
+        print("Data saved successfully!")
 
 
 
@@ -154,6 +161,7 @@ def main():
             store.visualize_data()
 
         elif choice == "7":
+            store.save_data()
             break
 
         else:
